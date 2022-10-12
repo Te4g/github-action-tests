@@ -1,0 +1,19 @@
+name: Send notification to a Teams webhook
+
+on:
+  release:
+    types: [published]
+    
+env:
+  TAG: ${{ github.event.release.tag_name }}
+  CONTENT: ${{ github.event.release.body }}
+  TEAMS_WEBHOOK: ${{ secrets.TEAMS_WEBHOOK }}
+
+jobs:
+  notify-release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Send notification
+      run: chmod +x .github/workflows/scripts/release.sh && .github/workflows/scripts/release.sh
